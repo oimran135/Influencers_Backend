@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-    'auth',
+    'authentication',
     'campaigns',
 ]
 
@@ -71,7 +71,7 @@ DATABASES = {
 'ENGINE': 'django.db.backends.postgresql_psycopg2',
 'NAME': 'Influencers',
 'USER': 'postgres',
-'PASSWORD': 'oimran!#5',
+'PASSWORD': 'postgres',
 'HOST': 'localhost',
 'PORT': '5432',
 }
