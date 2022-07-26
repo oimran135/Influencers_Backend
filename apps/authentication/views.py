@@ -6,7 +6,19 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 import logging
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import CustomTokenObtainPairSerializer
 
+
+def response_json(status=200, data=None, message=None):
+    return {
+        "data":data,
+        "message":message,
+        "status":status
+    }
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 class TestView(APIView):
     permission_classes = [IsAuthenticated]
