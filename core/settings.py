@@ -186,18 +186,18 @@ REST_FRAMEWORK = {
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-# DJOSER = {
+#DJOSER = {
 #     'LOGIN_FIELD': 'email',
 #     'PASSWORD_RESET_CONFIRM_URL': 'user/user_management/password/reset/confirm/{uid}/{token}/',
 #     'ACTIVATION_URL': 'user/user_management/activate/{uid}/{token}/',
 #     'SEND_ACTIVATION_EMAIL': True,
-#     'SERIALIZERS': {
-#         'user_create': 'user_management.serializer.UserRegistrationSerializer'
-#     },
+#    'SERIALIZERS': {
+#        'user_create': 'authentication.serializers.CurrentUserSerializer'
+#    },
 #     'USER_CREATE_PASSWORD_RETYPE': True,
 #     'SEND_CONFIRMATION_EMAIL': True,
 #
-# }
+#}
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
