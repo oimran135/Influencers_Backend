@@ -1,8 +1,11 @@
+from email.policy import default
 from django.db import models
 
 
 class Brand(models.Model):
-    pass
+    name = models.CharField(max_length=20, blank=True, null=True)
+    img = models.ImageField(blank=True, null=True)
+
 
 class Campaign(models.Model):
 
@@ -25,8 +28,8 @@ class Campaign(models.Model):
     days = models.IntegerField(blank=True, null=True)
     influencers_count = models.IntegerField(blank=True, null=True)
     campaign_status = models.CharField(max_length=10, choices= campaignStatus_choices,blank=True, null=True)
-    brand_img = models.ImageField()
     total_posts = models.IntegerField(blank=True, null=True)
+    brand = models.ForeignKey(Brand, null=True, blank=True, on_delete=models.CASCADE)
 
 
 class Category(models.Model):
