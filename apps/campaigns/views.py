@@ -76,7 +76,6 @@ class CreateCampaignView(APIView):
 
     def post(self, request):
         bool_var = request.user.is_staff
-        print(bool_var)
 
         if bool_var is True:
             serializer = CampaignSerializer(data = request.data)
@@ -99,7 +98,6 @@ class CreateBrandView(APIView):
 
     def post(self, request):
         bool_var = request.user.is_staff
-        print(bool_var)
 
         if bool_var is True:
             serializer = BrandSerializer(data = request.data)
