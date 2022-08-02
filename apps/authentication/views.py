@@ -8,8 +8,16 @@ from rest_framework_simplejwt.tokens import RefreshToken
 import logging
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from apps.authentication.models import Influencer
-from .serializers import CustomTokenObtainPairSerializer, InfluencerSerializer
+from apps.authentication.models import (
+    Influencer,
+    User,
+)
+
+from .serializers import (
+    CustomTokenObtainPairSerializer,
+    InfluencerSerializer,
+    UserSerializer,
+)
 
 
 def response_json(status=200, data=None, message=None):
@@ -96,4 +104,16 @@ class InfluencerView(APIView):
     def get(self, request):
         queryset = InfluencerView.get_queryset(request)
         serializer = InfluencerSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class BrandAmbassadorView(APIView):
+
+    def get_queryset(request):
+        queryset = User.objects.filter(is_superuser=False, is_staff=False)
+        return queryset
+
+    def get(self, request):
+        queryset = BrandAmbassadorView.get_queryset(request)
+        serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
