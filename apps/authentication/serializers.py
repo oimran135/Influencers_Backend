@@ -1,5 +1,6 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import User
+from rest_framework.serializers import ModelSerializer
+from .models import Influencer, User
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -14,3 +15,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["is_superuser"] = user.is_superuser
         
         return token
+
+class InfluencerSerializer(ModelSerializer):
+
+    class Meta:
+        model = Influencer
+        fields = '__all__'

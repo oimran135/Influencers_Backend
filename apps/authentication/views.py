@@ -7,7 +7,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 import logging
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import CustomTokenObtainPairSerializer
+
+from apps.authentication.models import Influencer
+from .serializers import CustomTokenObtainPairSerializer, InfluencerSerializer
 
 
 def response_json(status=200, data=None, message=None):
@@ -84,3 +86,14 @@ class LogoutView(APIView):
                 response_json(status=True, data=None, message="User logout successfully."),
                 status=status.HTTP_205_RESET_CONTENT,
             )
+
+class InfluencerView(APIView):
+    
+    def get_queryset(request):
+        queryset = Influencer.objects.all()
+        return queryset
+
+    def get(self, request):
+        queryset = InfluencerView.get_queryset(request)
+        serializer = InfluencerSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
