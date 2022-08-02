@@ -114,6 +114,9 @@ class BrandAmbassadorView(APIView):
         return queryset
 
     def get(self, request):
-        queryset = BrandAmbassadorView.get_queryset(request)
-        serializer = UserSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        if request.user.is_staff is True:
+            queryset = BrandAmbassadorView.get_queryset(request)
+            serializer = UserSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_403_FORBIDDEN)
