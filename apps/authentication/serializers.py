@@ -21,3 +21,10 @@ class InfluencerSerializer(ModelSerializer):
     class Meta:
         model = Influencer
         fields = '__all__'
+
+
+class UserSerializer(ModelSerializer):
+    
+    class Meta:
+        model = User
+        fields = '__all__'

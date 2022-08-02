@@ -6,12 +6,18 @@ from .models import (
     Brand,
 )
 
+class HashtagSerializer(ModelSerializer):
+
+    class Meta:
+        model = Campaign
+        fields = ['id', 'hashtag']
+
 
 class CampaignSerializer(ModelSerializer):
     
     class Meta:
         model = Campaign
-        fields = '__all__'
+        fields = ['name']
 
 
 class BrandSerializer(ModelSerializer):

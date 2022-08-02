@@ -14,6 +14,7 @@ from .serializers import (
     BrandSerializer,
     CampaignSerializer,
     ViewCampaignsSerializer,
+    HashtagSerializer,
 )
 
 
@@ -40,6 +41,7 @@ class ActiveCampaignsView(APIView):
         serializer = ViewCampaignsSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class CountStatistics(APIView):
 
     def get(self, request):
@@ -57,6 +59,7 @@ class CountStatistics(APIView):
 
         return Response(data, status=status.HTTP_200_OK)
 
+
 class AllCampaignsView(APIView):
 
     def get_queryset(request):
@@ -72,5 +75,36 @@ class AllCampaignsView(APIView):
 class CreateCampaignView(APIView):
 
     def post(self, request):
-        pass
-       
+        bool_var = request.user.is_staff
+        print(bool_var)
+
+        if bool_var is True:
+            serializer = CampaignSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(status=status.HTTP_403_FORBIDDEN)    
+
+
+class HashtagsView(APIView):
+
+    def get(self, request):
+        query = Campaign.objects.all()
+        serializer = HashtagSerializer(query, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CreateBrandView(APIView):
+
+    def post(self, request):
+        bool_var = request.user.is_staff
+        print(bool_var)
+
+        if bool_var is True:
+            serializer = BrandSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(status=status.HTTP_403_FORBIDDEN)
