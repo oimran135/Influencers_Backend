@@ -8,6 +8,13 @@ from django.contrib.auth.models import (
     BaseUserManager,
 )  
 
+
+def UserImages(instance, filename):
+    return '/'.join( ['images', 'Users', str(instance.id), filename] )
+
+def InfluencerImages(instance, filename):
+    return '/'.join( ['images', 'Influencers', str(instance.id), filename] )
+
 class CustomAccountManager(BaseUserManager):
 
     def create_superuser(self, email, username, first_name, password, **other_fields):
@@ -49,7 +56,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         'about'), max_length=500, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-
+    img = models.ImageField(upload_to=UserImages, blank=True, null=True)
     objects = CustomAccountManager()
 
     USERNAME_FIELD = 'email'
@@ -69,6 +76,7 @@ class Influencer(models.Model):
     # Data fed by the influencer themselves
     services_cost = models.IntegerField(blank=True, null=True)
     children = models.ManyToManyField('Children', blank=True, related_name="children")
+    img = models.ImageField(upload_to=InfluencerImages, blank=True, null=True)
 
 
 
