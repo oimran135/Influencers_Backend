@@ -17,7 +17,7 @@ class CampaignSerializer(ModelSerializer):
     
     class Meta:
         model = Campaign
-        fields = ['name']
+        fields = '__all__'
 
 
 class BrandSerializer(ModelSerializer):

@@ -2,6 +2,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 from apps.authentication.models import Influencer
 
@@ -73,6 +75,14 @@ class AllCampaignsView(APIView):
 
 
 class CreateCampaignView(APIView):
+    @swagger_auto_schema(
+    request_body=CampaignSerializer,
+        responses={
+            201: "Reset Content",
+            403: "Forbidden",
+            500: "Internal Server Error",
+        },
+    )
 
     def post(self, request):
         bool_var = request.user.is_staff
@@ -95,6 +105,15 @@ class HashtagsView(APIView):
 
 
 class CreateBrandView(APIView):
+
+    @swagger_auto_schema(
+    request_body=BrandSerializer,
+        responses={
+            201: "Reset Content",
+            403: "Forbidden",
+            500: "Internal Server Error",
+        },
+    )
 
     def post(self, request):
         bool_var = request.user.is_staff
