@@ -28,10 +28,10 @@ class BrandSerializer(ModelSerializer):
 
 
 class ViewCampaignsSerializer(ModelSerializer):
-    brand_image = serializers.ImageField(source = "brand.brand_image")
+    brand_set = serializers.ImageField(source = "brand.brand_image")
 
     class Meta:
         model = Campaign
-        fields = ['name', 'hashtag', 'start_date', 'campaign_type', 'campaign_status', 'brand_image']
+        fields = ['name', 'hashtag', 'start_date', 'campaign_type', 'campaign_status', 'brand_set']
 
 
