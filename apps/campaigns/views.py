@@ -40,7 +40,7 @@ class ActiveCampaignsView(APIView):
 
     def get(self, request):
         queryset = ActiveCampaignsView.get_queryset(request)
-        serializer = ViewCampaignsSerializer(queryset, many=True)
+        serializer = CampaignSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
