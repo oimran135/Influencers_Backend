@@ -10,7 +10,7 @@ def CampaignImages(instance, filename):
 
 class Brand(models.Model):
     name = models.CharField(max_length=20, blank=True, null=True)
-    brand_image = models.ImageField(upload_to=BrandImages, blank=True, null=False)
+    brand_image = models.ImageField(upload_to=BrandImages, blank=True, null=False, default='media/images/Brands/None/index.jpeg')
 
     def __str__(self):
       return self.name
@@ -32,7 +32,7 @@ class Campaign(models.Model):
 
     name = models.CharField(max_length=100, unique=True, blank=False, null=False)
     hashtag = models.CharField(max_length=20, unique=True, blank=False, null=False)
-    img = models.ImageField(upload_to=CampaignImages, blank=True, null=False)
+    img = models.ImageField(upload_to=CampaignImages, blank=True, null=False, default='media/images/Brands/None/index.jpeg')
     campaign_type = models.CharField(max_length=10, choices=campaignType_choices, blank=False, null=False)
     start_date = models.DateField(auto_now=True)
     days = models.IntegerField(blank=True, null=True)
