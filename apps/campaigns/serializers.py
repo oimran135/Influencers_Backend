@@ -13,7 +13,7 @@ class HashtagSerializer(ModelSerializer):
         fields = ['id', 'hashtag']
 
 
-class CampaignSerializer(ModelSerializer):
+class ActiveCampaignsSerializer(ModelSerializer):
     
     class Meta:
         model = Campaign
@@ -27,7 +27,7 @@ class BrandSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class ViewCampaignsSerializer(ModelSerializer):
+class AllCampaignsSerializer(ModelSerializer):
     brand_set = serializers.ImageField(source = "brand.brand_image")
 
     class Meta:
