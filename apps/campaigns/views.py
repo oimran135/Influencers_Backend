@@ -136,10 +136,8 @@ class CreateBrandView(APIView):
 class AmbassadorActiveCampaingsView(APIView):
 
     def get(self, request):
-        if not request.user.is_staff:
-            user_id = request.user.id
-            queryset = Campaign.objects.filter(ambassadors=user_id, campaign_status="Active")
-            serializer = CampaignSerializer(queryset, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+        user_id = request.user.id
+        queryset = Campaign.objects.filter(ambassadors=user_id, campaign_status="Active")
+        serializer = CampaignSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
         
