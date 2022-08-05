@@ -19,7 +19,7 @@ class Brand(models.Model):
 class Campaign(models.Model):
 
     campaignType_choices = (
-        ("Preodic", "Preodic"),
+        ("Periodic", "Periodic"),
         ("Single", "Single"),
     )
 
@@ -43,7 +43,7 @@ class Campaign(models.Model):
 
 
 class CampaignDates(models.Model):
-    campaign = models.ForeignKey(Campaign, null=True, blank=True, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, blank=True, on_delete=models.CASCADE, default = 0)
     start_date = models.DateField()
     end_date = models.DateField()
 

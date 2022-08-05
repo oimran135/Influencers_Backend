@@ -16,6 +16,7 @@ from .serializers import (
     BrandSerializer,
     AllCampaignsSerializer,
     ActiveCampaignsSerializer,
+    CreateCampaignSerializer,
     HashtagSerializer,
 )
 
@@ -76,9 +77,9 @@ class AllCampaignsView(APIView):
 
 class CreateCampaignView(APIView):
     @swagger_auto_schema(
-    request_body=AllCampaignsSerializer,
+    request_body=CreateCampaignSerializer,
         responses={
-            201: "Reset Content",
+            201: "Created",
             403: "Forbidden",
             500: "Internal Server Error",
         },
@@ -87,7 +88,7 @@ class CreateCampaignView(APIView):
     def post(self, request):
 
         if request.user.is_staff:
-            serializer = AllCampaignsSerializer(data = request.data)
+            serializer = CreateCampaignSerializer(data = request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(status=status.HTTP_201_CREATED)
