@@ -15,9 +15,7 @@ from .models import (
 
 from .serializers import (
     BrandSerializer,
-    AllCampaignsSerializer,
-    ActiveCampaignsSerializer,
-    CreateCampaignSerializer,
+    CampaignSerializer,
     HashtagSerializer,
 )
 
@@ -42,7 +40,7 @@ class ActiveCampaignsView(APIView):
 
     def get(self, request):
         queryset = ActiveCampaignsView.get_queryset(request)
-        serializer = ActiveCampaignsSerializer(queryset, many=True)
+        serializer = CampaignSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -72,13 +70,13 @@ class AllCampaignsView(APIView):
 
     def get(self, request):
         queryset = self.get_queryset()
-        serializer = CreateCampaignSerializer(queryset, many=True)
+        serializer = CampaignSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CreateCampaignView(APIView):
     @swagger_auto_schema(
-        request_body=CreateCampaignSerializer,
+        request_body=CampaignSerializer,
         responses={
             201: "Created",
             403: "Forbidden",
@@ -89,7 +87,7 @@ class CreateCampaignView(APIView):
         try:
             with transaction.atomic():
                 if request.user.is_staff:
-                    serializer = CreateCampaignSerializer(data=request.data)
+                    serializer = CampaignSerializer(data=request.data)
                     if serializer.is_valid():
                         serializer.save()
                         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -131,9 +129,9 @@ class CreateBrandView(APIView):
 class AmbassadorActiveCampaingsView(APIView):
 
     def get(self, request):
-        if request.user.is_staff:
+        if not request.user.is_staff:
             user_id = request.user.id
             queryset = Campaign.objects.filter(ambassadors=user_id, campaign_status="Active")
-            serializer = ActiveCampaignsSerializer(queryset, many=True)
+            serializer = CampaignSerializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_403_FORBIDDEN)

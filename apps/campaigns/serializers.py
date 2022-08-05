@@ -15,24 +15,10 @@ class HashtagSerializer(ModelSerializer):
         fields = ['id', 'hashtag']
 
 
-class ActiveCampaignsSerializer(ModelSerializer):
-    class Meta:
-        model = Campaign
-        fields = '__all__'
-
-
 class BrandSerializer(ModelSerializer):
     class Meta:
         model = Brand
         fields = '__all__'
-
-
-class AllCampaignsSerializer(ModelSerializer):
-    brand_set = serializers.ImageField(source="brand.brand_image")
-
-    class Meta:
-        model = Campaign
-        fields = ['name', 'hashtag', 'campaign_type', 'campaign_status', 'brand_set']
 
 
 class CampaignDatesSerializer(serializers.ModelSerializer):
@@ -41,7 +27,7 @@ class CampaignDatesSerializer(serializers.ModelSerializer):
         fields = ("start_date", "end_date")
 
 
-class CreateCampaignSerializer(ModelSerializer):
+class CampaignSerializer(ModelSerializer):
     campaign_dates = CampaignDatesSerializer(many=True)
 
     class Meta:
