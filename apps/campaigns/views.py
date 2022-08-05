@@ -1,3 +1,4 @@
+from django.db import transaction, IntegrityError
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -22,7 +23,7 @@ from .serializers import (
 
 
 class BrandView(APIView):
-    
+
     def get_queryset(request):
         queryset = Brand.objects.all()
         return queryset
@@ -54,10 +55,10 @@ class CountStatistics(APIView):
         query4 = Influencer.objects.all().count()
 
         data = {
-            "Total Campaigns":query1,
-            "Successful Campaigns":query2,
-            "In Progress Campaigns":query3,
-            "Total Ifluencers":query4,
+            "Total Campaigns": query1,
+            "Successful Campaigns": query2,
+            "In Progress Campaigns": query3,
+            "Total Ifluencers": query4,
         }
 
         return Response(data, status=status.HTTP_200_OK)
@@ -65,35 +66,37 @@ class CountStatistics(APIView):
 
 class AllCampaignsView(APIView):
 
-    def get_queryset(request):
+    def get_queryset(self):
         queryset = Campaign.objects.all()
         return queryset
 
     def get(self, request):
-        queryset = AllCampaignsView.get_queryset(request)
-        serializer = AllCampaignsSerializer(queryset, many=True)
+        queryset = self.get_queryset()
+        serializer = CreateCampaignSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CreateCampaignView(APIView):
     @swagger_auto_schema(
-    request_body=CreateCampaignSerializer,
+        request_body=CreateCampaignSerializer,
         responses={
             201: "Created",
             403: "Forbidden",
             500: "Internal Server Error",
         },
     )
-
     def post(self, request):
-
-        if request.user.is_staff:
-            serializer = CreateCampaignSerializer(data = request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(status=status.HTTP_201_CREATED)
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        return Response(status=status.HTTP_403_FORBIDDEN)    
+        try:
+            with transaction.atomic():
+                if request.user.is_staff:
+                    serializer = CreateCampaignSerializer(data=request.data)
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response(serializer.data, status=status.HTTP_201_CREATED)
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "You are not staff"}, status=status.HTTP_403_FORBIDDEN)
+        except Exception as e:
+            return Response({"message": e.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class HashtagsView(APIView):
@@ -107,18 +110,17 @@ class HashtagsView(APIView):
 class CreateBrandView(APIView):
 
     @swagger_auto_schema(
-    request_body=BrandSerializer,
+        request_body=BrandSerializer,
         responses={
             201: "Reset Content",
             403: "Forbidden",
             500: "Internal Server Error",
         },
     )
-
     def post(self, request):
 
         if request.user.is_staff:
-            serializer = BrandSerializer(data = request.data)
+            serializer = BrandSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(status=status.HTTP_201_CREATED)
@@ -129,7 +131,6 @@ class CreateBrandView(APIView):
 class AmbassadorActiveCampaingsView(APIView):
 
     def get(self, request):
-
         if request.user.is_staff:
             user_id = request.user.id
             queryset = Campaign.objects.filter(ambassadors=user_id, campaign_status="Active")
