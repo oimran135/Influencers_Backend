@@ -14,8 +14,9 @@ from .models import (
 
 from .serializers import (
     BrandSerializer,
-    CampaignSerializer,
-    ViewCampaignsSerializer,
+    AllCampaignsSerializer,
+    ActiveCampaignsSerializer,
+    CreateCampaignSerializer,
     HashtagSerializer,
 )
 
@@ -40,7 +41,7 @@ class ActiveCampaignsView(APIView):
 
     def get(self, request):
         queryset = ActiveCampaignsView.get_queryset(request)
-        serializer = CampaignSerializer(queryset, many=True)
+        serializer = ActiveCampaignsSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -70,25 +71,24 @@ class AllCampaignsView(APIView):
 
     def get(self, request):
         queryset = AllCampaignsView.get_queryset(request)
-        serializer = ViewCampaignsSerializer(queryset, many=True)
+        serializer = AllCampaignsSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CreateCampaignView(APIView):
     @swagger_auto_schema(
-    request_body=CampaignSerializer,
+    request_body=CreateCampaignSerializer,
         responses={
-            201: "Reset Content",
+            201: "Created",
             403: "Forbidden",
             500: "Internal Server Error",
         },
     )
 
     def post(self, request):
-        bool_var = request.user.is_staff
 
-        if bool_var is True:
-            serializer = CampaignSerializer(data = request.data)
+        if request.user.is_staff:
+            serializer = CreateCampaignSerializer(data = request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(status=status.HTTP_201_CREATED)
@@ -116,12 +116,23 @@ class CreateBrandView(APIView):
     )
 
     def post(self, request):
-        bool_var = request.user.is_staff
 
-        if bool_var is True:
+        if request.user.is_staff:
             serializer = BrandSerializer(data = request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(status=status.HTTP_201_CREATED)
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+class AmbassadorActiveCampaingsView(APIView):
+
+    def get(self, request):
+
+        if request.user.is_staff:
+            user_id = request.user.id
+            queryset = Campaign.objects.filter(ambassadors=user_id, campaign_status="Active")
+            serializer = ActiveCampaignsSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_403_FORBIDDEN)

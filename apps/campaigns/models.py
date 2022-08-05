@@ -19,7 +19,7 @@ class Brand(models.Model):
 class Campaign(models.Model):
 
     campaignType_choices = (
-        ("Preodic", "Preodic"),
+        ("Periodic", "Periodic"),
         ("Single", "Single"),
     )
 
@@ -34,15 +34,18 @@ class Campaign(models.Model):
     hashtag = models.CharField(max_length=20, unique=True, blank=False, null=False)
     img = models.ImageField(upload_to=CampaignImages, blank=True, null=False, default='media/images/Brands/None/index.jpeg')
     campaign_type = models.CharField(max_length=10, choices=campaignType_choices, blank=False, null=False)
-    start_date = models.DateField(auto_now=True)
-    days = models.IntegerField(blank=True, null=True)
-    influencers_count = models.IntegerField(blank=True, null=True)
     campaign_status = models.CharField(max_length=20, choices= campaignStatus_choices,blank=True, null=True)
-    total_posts = models.IntegerField(blank=True, null=True)
     brand = models.ForeignKey(Brand, null=True, blank=True, related_name="brand_set", on_delete=models.CASCADE)
+    ambassadors = models.ManyToManyField('authentication.User', blank=True, related_name="campaign_ambassadors")
 
     def __str__(self):
       return self.name
+
+
+class CampaignDates(models.Model):
+    campaign = models.ForeignKey(Campaign, blank=True, on_delete=models.CASCADE, default = 0)
+    start_date = models.DateField()
+    end_date = models.DateField()
 
 
 class Category(models.Model):
