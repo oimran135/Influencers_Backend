@@ -1,5 +1,6 @@
-from email.policy import default
 from django.db import models
+
+from apps.authentication.models import User
 
 
 def BrandImages(instance, filename):
@@ -39,16 +40,22 @@ class Campaign(models.Model):
     campaign_type = models.CharField(max_length=10, choices=campaignType_choices, blank=False, null=False)
     campaign_status = models.CharField(max_length=20, choices=campaignStatus_choices, blank=True, null=True)
     brand = models.ForeignKey(Brand, null=True, blank=True, related_name="brand_set", on_delete=models.CASCADE)
-    ambassadors = models.ManyToManyField('authentication.User', blank=True, related_name="campaign_ambassadors")
+    ambassadors = models.ManyToManyField(User, through='CampaignAmbassador', related_name="campaign_user")
 
     def __str__(self):
         return self.name
 
 
 class CampaignDates(models.Model):
-    campaign = models.ForeignKey(Campaign, related_name="campaign_dates",  blank=True, on_delete=models.CASCADE, default=0)
+    campaign = models.ForeignKey(Campaign, related_name="campaign_dates", blank=True, on_delete=models.CASCADE,
+                                 default=0)
     start_date = models.DateField()
     end_date = models.DateField()
+
+
+class CampaignAmbassador(models.Model):
+    user = models.ForeignKey(User, related_name="user_ambassadors", on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, related_name="campaign_ambassadors", on_delete=models.CASCADE)
 
 
 class Category(models.Model):

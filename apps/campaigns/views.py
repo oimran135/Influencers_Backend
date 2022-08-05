@@ -1,5 +1,7 @@
+import traceback
+
 from django.db import transaction, IntegrityError
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -75,6 +77,8 @@ class AllCampaignsView(APIView):
 
 
 class CreateCampaignView(APIView):
+    # permission_classes = [permissions.IsAdminUser]
+
     @swagger_auto_schema(
         request_body=CampaignSerializer,
         responses={
@@ -86,15 +90,18 @@ class CreateCampaignView(APIView):
     def post(self, request):
         try:
             with transaction.atomic():
-                if request.user.is_staff:
-                    serializer = CampaignSerializer(data=request.data)
-                    if serializer.is_valid():
-                        serializer.save()
-                        return Response(serializer.data, status=status.HTTP_201_CREATED)
-                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                return Response({"message": "You are not staff"}, status=status.HTTP_403_FORBIDDEN)
+                serializer = CampaignSerializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            traceback.print_exc()
             return Response({"message": e.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    # def get_permissions(self):
+    #     if self.request.user.is_staff:
+    #         pass
 
 
 class HashtagsView(APIView):
