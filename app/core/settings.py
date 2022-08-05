@@ -1,25 +1,19 @@
 import os
 from pathlib import Path
 from datetime import timedelta
-import environ
 import os
-
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, True)
-)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.getenv("key") or 'django-insecure-q6l-y924x!w^(=1y@p%)%oe_nba^=+^h#z+fbnxqjq@g^oc&r+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("debug") or False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -82,11 +76,11 @@ AUTH_USER_MODEL = 'authentication.User'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('NAME'),
-        'USER': env('USER'),
-        'PASSWORD': env('PASSWORD'),
-        'HOST': env('HOST'),
-        'PORT': env('PORT'),
+        'NAME': os.getenv("NAME") or 'dreams',
+        'USER': os.getenv("USER") or 'postgres',
+        'PASSWORD': os.getenv("PASSWORD") or 'Fa@12345',
+        'HOST': os.getenv("HOST") or 'localhost',
+        'PORT': os.getenv("PORT") or 5432,
     }
 }
 
@@ -123,7 +117,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -186,18 +179,6 @@ REST_FRAMEWORK = {
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-#DJOSER = {
-#     'LOGIN_FIELD': 'email',
-#     'PASSWORD_RESET_CONFIRM_URL': 'user/user_management/password/reset/confirm/{uid}/{token}/',
-#     'ACTIVATION_URL': 'user/user_management/activate/{uid}/{token}/',
-#     'SEND_ACTIVATION_EMAIL': True,
-#    'SERIALIZERS': {
-#        'user_create': 'authentication.serializers.CurrentUserSerializer'
-#    },
-#     'USER_CREATE_PASSWORD_RETYPE': True,
-#     'SEND_CONFIRMATION_EMAIL': True,
-#
-#}
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -206,17 +187,11 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'heavyviruskhan@gmail.com'
 EMAIL_HOST_PASSWORD = '12345678qQ'
 
+STATIC_URL = 'static/'
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-PROJECT_DIR = os.path.dirname(__file__)
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
-
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 LOGGING = {
     "version": 1,
