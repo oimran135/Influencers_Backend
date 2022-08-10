@@ -36,10 +36,11 @@ class CampaignAmbassadorSerializer(serializers.ModelSerializer):
 class CampaignSerializer(ModelSerializer):
     campaign_dates = CampaignDatesSerializer(many=True)
     ambassadors = CampaignAmbassadorSerializer(many=True, write_only=True)
+    brand_image = serializers.ImageField(source = "brand.brand_image")
 
     class Meta:
         model = Campaign
-        fields = ['name', 'hashtag', 'campaign_type', 'campaign_status', 'brand', 'campaign_dates', 'ambassadors']
+        fields = ['name', 'hashtag', 'campaign_type', 'campaign_status', 'brand_image', 'campaign_dates', 'ambassadors', 'img']
 
     def create(self, validated_data):
         campaign_dates_data = validated_data.pop('campaign_dates', None)
