@@ -1,5 +1,4 @@
 import traceback
-
 from django.db import transaction, IntegrityError
 from rest_framework import status, permissions
 from rest_framework.views import APIView
@@ -140,4 +139,4 @@ class AmbassadorActiveCampaingsView(APIView):
         queryset = Campaign.objects.filter(ambassadors=user_id, campaign_status="Active")
         serializer = CampaignSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+

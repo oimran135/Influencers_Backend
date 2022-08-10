@@ -8,7 +8,7 @@ from .views import (
     CreateCampaignView,
     HashtagsView,
     CreateBrandView,
-    AmbassadorActiveCampaingsView
+    AmbassadorActiveCampaingsView,
 )
 
 urlpatterns = [

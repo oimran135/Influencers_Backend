@@ -13,6 +13,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['user_id'] = user.id
         token["is_staff"] = user.is_staff
         token["is_superuser"] = user.is_superuser
+        token["image"] = user.img
         
         return token
 
