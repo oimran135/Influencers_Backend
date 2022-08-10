@@ -56,7 +56,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         'about'), max_length=500, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    img = models.ImageField(upload_to=UserImages, default='media/images/Users/None/index.jpg')
+    img = models.ImageField(upload_to=UserImages, default='media/images/Users/None/index.png')
     objects = CustomAccountManager()
 
     USERNAME_FIELD = 'email'
