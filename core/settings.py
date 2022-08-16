@@ -258,6 +258,7 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   'fields': 'id, name, email, age_range'
 }
 
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
 #LOGIN_URL = 'placeholder'
 #LOGOUT_URL = 'placeholder'
 #LOGIN_REDIRECT_URL = 'placeholder'
