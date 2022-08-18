@@ -15,6 +15,7 @@ class HashtagSerializer(ModelSerializer):
 
 
 class BrandSerializer(ModelSerializer):
+    brand_image = serializers.ImageField(required=False)
     class Meta:
         model = Brand
         fields = '__all__'

@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.serializers import ModelSerializer
 from .models import Influencer, User
@@ -25,7 +26,7 @@ class InfluencerSerializer(ModelSerializer):
 
 
 class UserSerializer(ModelSerializer):
-    
+    img = serializers.ImageField(required=False)
     class Meta:
         model = User
         exclude = ['password']
