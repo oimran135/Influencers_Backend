@@ -35,8 +35,8 @@ class CampaignAmbassadorSerializer(serializers.ModelSerializer):
 
 
 class CampaignSerializer(ModelSerializer):
-    campaign_dates = CampaignDatesSerializer(many=True)
-    ambassadors = CampaignAmbassadorSerializer(many=True, write_only=True)
+    campaign_dates = CampaignDatesSerializer(many=True, required=False)
+    ambassadors = CampaignAmbassadorSerializer(many=True, write_only=True, required=False)
     brand_image = serializers.ImageField(source = "brand.brand_image", required=False)
     img = serializers.ImageField(required=False)
 
