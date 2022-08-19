@@ -211,3 +211,23 @@ SWAGGER_SETTINGS = {
     "USE_SESSION_AUTH": False,
     "SECURITY_DEFINITIONS": {"Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}},
 }
+
+SOCIAL_AUTH_FACEBOOK_KEY = '923731648585176'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'ab824b0a0b27051b555de59bf805625f'
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+  'locale': '*',
+  'fields': 'id, name, email, age_range'
+}
+
+# SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+SOCIAL_AUTH_USER_FIELDS = ['email', 'username', 'first_name', 'password']
+
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:3000/'
