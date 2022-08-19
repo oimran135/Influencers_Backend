@@ -8,7 +8,7 @@ from .views import (
     CreateCampaignView,
     HashtagsView,
     CreateBrandView,
-    AmbassadorActiveCampaingsView
+    AmbassadorActiveCampaingsView,
 )
 
 urlpatterns = [
@@ -19,5 +19,5 @@ urlpatterns = [
     path('campaigns/create/', CreateCampaignView.as_view()),
     path('campaigns/hashtags/all/', HashtagsView.as_view()),
     path('brand/create/', CreateBrandView.as_view()),
-    path('ambassador/campaigns/active', AmbassadorActiveCampaingsView.as_view()),
+    path('ambassador/campaigns/active/', AmbassadorActiveCampaingsView.as_view()),
 ]

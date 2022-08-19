@@ -1,5 +1,4 @@
 import traceback
-
 from django.db import transaction, IntegrityError
 from rest_framework import status, permissions
 from rest_framework.views import APIView
@@ -36,12 +35,12 @@ class BrandView(APIView):
 
 class ActiveCampaignsView(APIView):
 
-    def get_queryset(request):
+    def get_queryset(self):
         queryset = Campaign.objects.filter(campaign_status="Active")
         return queryset
 
     def get(self, request):
-        queryset = ActiveCampaignsView.get_queryset(request)
+        queryset = self.get_queryset()
         serializer = CampaignSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -136,9 +135,8 @@ class CreateBrandView(APIView):
 class AmbassadorActiveCampaingsView(APIView):
 
     def get(self, request):
-        if not request.user.is_staff:
-            user_id = request.user.id
-            queryset = Campaign.objects.filter(ambassadors=user_id, campaign_status="Active")
-            serializer = CampaignSerializer(queryset, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+        user_id = request.user.id
+        queryset = Campaign.objects.filter(ambassadors=user_id, campaign_status="Active")
+        serializer = CampaignSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
