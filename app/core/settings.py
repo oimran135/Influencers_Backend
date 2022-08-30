@@ -76,25 +76,13 @@ AUTH_USER_MODEL = 'authentication.User'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("NAME") or 'dreams',
-        'USER': os.getenv("USER") or 'postgres',
-        'PASSWORD': os.getenv("PASSWORD") or 'Fa@12345',
-        'HOST': os.getenv("HOST") or 'localhost',
-        'PORT': os.getenv("PORT") or 5432,
+        'NAME': os.getenv("NAME"),
+        'USER': os.getenv("USER"),
+        'PASSWORD': os.getenv("PASSWORD"),
+        'HOST': os.getenv("HOST"),
+        'PORT': os.getenv("PORT")
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env('NAME'),
-#         'USER': env('USER'),
-#         'PASSWORD': env('PASSWORD'),
-#         'HOST': env('HOST'),
-#         'PORT': env('PORT'),
-#     }
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
